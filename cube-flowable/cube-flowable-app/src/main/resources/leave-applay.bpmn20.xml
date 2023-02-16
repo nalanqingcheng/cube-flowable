@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef">
+  <process id="qwj3y412" name="name_074boicc" isExecutable="true">
+    <startEvent id="startEvent1" flowable:formFieldValidation="true">
+      <outgoing>Flow_0u7s5gy</outgoing>
+    </startEvent>
+    <userTask id="Activity_1o6scq8" name="张三" flowable:assignee="zhangsan">
+      <documentation>张三审批</documentation>
+      <extensionElements>
+        <flowable:formProperty id="datetime" name="请假时间" readable="true" writable="true" />
+        <flowable:formProperty id="days" name="请假天数" readable="true" writable="true" />
+        <flowable:formProperty id="reason" name="请假理由" readable="true" writable="true" />
+      </extensionElements>
+      <incoming>Flow_0u7s5gy</incoming>
+      <outgoing>Flow_1hsiump</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_0u7s5gy" sourceRef="startEvent1" targetRef="Activity_1o6scq8" />
+    <userTask id="Activity_08atq52" name="李四" flowable:assignee="lisi">
+      <documentation>李四审批</documentation>
+      <extensionElements>
+        <flowable:formProperty id="datetime" name="请假时间" readable="true" writable="true" />
+        <flowable:formProperty id="days" name="请假天数" readable="true" writable="true" />
+        <flowable:formProperty id="reason" name="请假理由" readable="true" writable="true" />
+      </extensionElements>
+      <incoming>Flow_1hsiump</incoming>
+      <outgoing>Flow_04xbbcn</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_1hsiump" sourceRef="Activity_1o6scq8" targetRef="Activity_08atq52" />
+    <userTask id="Activity_04db16a" name="王五" flowable:assignee="wangwu">
+      <documentation>王五审批</documentation>
+      <extensionElements>
+        <flowable:formProperty id="datetime" name="请假时间" readable="true" writable="true" />
+        <flowable:formProperty id="days" name="请假天数" readable="true" writable="true" />
+        <flowable:formProperty id="reason" name="请假理由" readable="true" writable="true" />
+      </extensionElements>
+      <incoming>Flow_04xbbcn</incoming>
+      <outgoing>Flow_08ui7xj</outgoing>
+    </userTask>
+    <sequenceFlow id="Flow_04xbbcn" sourceRef="Activity_08atq52" targetRef="Activity_04db16a" />
+    <endEvent id="Event_0jy9iev">
+      <incoming>Flow_08ui7xj</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_08ui7xj" sourceRef="Activity_04db16a" targetRef="Event_0jy9iev" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_qwj3y412">
+    <bpmndi:BPMNPlane id="BPMNPlane_qwj3y412" bpmnElement="qwj3y412">
+      <bpmndi:BPMNEdge id="Flow_0u7s5gy_di" bpmnElement="Flow_0u7s5gy">
+        <omgdi:waypoint x="140" y="183" />
+        <omgdi:waypoint x="190" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hsiump_di" bpmnElement="Flow_1hsiump">
+        <omgdi:waypoint x="290" y="183" />
+        <omgdi:waypoint x="340" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04xbbcn_di" bpmnElement="Flow_04xbbcn">
+        <omgdi:waypoint x="440" y="183" />
+        <omgdi:waypoint x="490" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08ui7xj_di" bpmnElement="Flow_08ui7xj">
+        <omgdi:waypoint x="590" y="183" />
+        <omgdi:waypoint x="670" y="183" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="100" y="163" width="30" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o6scq8_di" bpmnElement="Activity_1o6scq8">
+        <omgdc:Bounds x="190" y="143" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08atq52_di" bpmnElement="Activity_08atq52">
+        <omgdc:Bounds x="340" y="143" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04db16a_di" bpmnElement="Activity_04db16a">
+        <omgdc:Bounds x="490" y="143" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jy9iev_di" bpmnElement="Event_0jy9iev">
+        <omgdc:Bounds x="670" y="163" width="40" height="40" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

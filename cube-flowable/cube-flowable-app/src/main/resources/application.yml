@@ -1,0 +1,32 @@
+# DB Configuration
+spring:
+  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    # url: jdbc:mysql://192.168.28.159:3306/cube-flowable-starter?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+#    url: jdbc:mysql://192.168.28.159:3306/cube-ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+#    username: root
+#    password: Hsoft@xjs123
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.28.198:1521:helowin
+    username: flowable
+    password: flowable2022
+
+  main:
+    allow-circular-references: true
+
+#logging
+logging:
+  level:
+    com.liujianan: debug
+
+mybatis:
+  type-aliases-package: com.liujianan.cubeflowable.entity
+  configuration:
+    map-underscore-to-camel-case: true
+#  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml,classpath:cube/flowable/mapper/*.xml
+
+# 工作流引擎配置
+cubeflow:
+  dbType: oracle
+  autoCreateTable: true

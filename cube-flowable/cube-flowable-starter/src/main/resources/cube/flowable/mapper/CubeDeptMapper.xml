@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liujianan.cube.flowable.mapper.CubeDeptMapper">
+
+    <resultMap type="com.liujianan.cube.flowable.entity.CubeDepartment" id="deptResult">
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+
+    <select id="selectDeptList" resultMap="deptResult">
+        select dept_id, dept_name, parent_id
+        from cube_flowable_dept
+        where del_flag = '0'
+    </select>
+
+    <select id="selectDeptListById" resultMap="deptResult">
+        select dept_id, dept_name, parent_id
+        from cube_flowable_dept
+        where del_flag = '0' and dept_id = #{deptId}
+    </select>
+
+    <select id="selectDeptByUserId" resultMap="deptResult">
+        select dept_id, dept_name, parent_id
+        from cube_flowable_dept
+        where del_flag = '0' and dept_id = ( select dept_id from cube_flowable_dept_mapping where user_id = #{userId})
+    </select>
+
+
+
+    <insert id="saveDept" parameterType="com.liujianan.cube.flowable.entity.CubeDepartment">
+        insert into cube_flowable_dept
+            (dept_id, dept_name, parent_id)
+        values (#{deptId}, #{deptName}, #{parentId})
+    </insert>
+
+    <insert id="insertDeptList">
+        insert into cube_flowable_dept
+        (dept_id, dept_name, parent_id)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.deptId}, #{item.deptName}, #{item.parentId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteDept" parameterType="String">
+        update cube_flowable_dept
+        set del_flag = '1'
+        where dept_id = #{deptId}
+    </delete>
+
+
+
+    <insert id="saveDeptUser">
+        insert into cube_flowable_dept_mapping
+            (dept_id, user_id, is_leader)
+        values (#{deptId}, #{userId}, #{isLeader})
+    </insert>
+
+    <insert id="insertDeptUserList">
+        insert into cube_flowable_dept_mapping
+        (dept_id,user_id,is_leader)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.deptId},#{item.userId},#{item.isLeader})
+        </foreach>
+    </insert>
+
+    <delete id="deleteDeptUser">
+        delete from cube_flowable_dept_mapping
+        where dept_id = #{deptId} and user_id = #{userId}
+    </delete>
+
+</mapper>

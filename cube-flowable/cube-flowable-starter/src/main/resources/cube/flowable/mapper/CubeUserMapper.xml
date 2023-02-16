@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liujianan.cube.flowable.mapper.CubeUserMapper">
+
+    <resultMap type="com.liujianan.cube.flowable.entity.CubeUser" id="userResult">
+        <result property="id" column="ID_"/>
+        <result property="name" column="DISPLAY_NAME_"/>
+        <result property="dept" column="dept_name"/>
+    </resultMap>
+
+    <resultMap type="com.liujianan.cube.flowable.entity.CubeRole" id="roleResult">
+        <result property="id" column="ID_"/>
+        <result property="name" column="NAME_"/>
+    </resultMap>
+
+
+    <select id="selectUserById" resultMap="userResult">
+        select ID_, DISPLAY_NAME_
+        from act_id_user
+        where ID_ = #{id}
+    </select>
+
+    <select id="selectUserIdByGroupId" parameterType="String">
+        select USER_ID_ as userId
+        from act_id_membership
+        where GROUP_ID_ = #{groupId}
+    </select>
+
+    <select id="selectUserByGroupId" resultMap="userResult">
+        select b.ID_ ,b.DISPLAY_NAME_
+        from act_id_membership a LEFT JOIN act_id_user b on a.USER_ID_ = b.ID_
+        where a.GROUP_ID_ = #{groupId}
+    </select>
+
+    <select id="selectUserList" resultMap="userResult">
+        select a.ID_,a.DISPLAY_NAME_,c.dept_name
+        from act_id_user a
+             left JOIN  cube_flowable_dept_mapping b on a.ID_ = b.user_id
+             left JOIN cube_flowable_dept c on b.dept_id = c.dept_id
+        where 1
+        <if test="userName != null and userName != ''">
+            and a.DISPLAY_NAME_ like
+            <if test="dbType == 'mysql'">CONCAT('%',#{userName},'%')</if>
+            <if test="dbType == 'oracle'">'%,'||#{userName}||',%'</if>
+            <if test="dbType == 'mssql'">'%,'+#{userName}+',%'</if>
+        </if>
+        <if test="deptId != null and deptId != ''">
+            and b.dept_id = #{deptId}
+        </if>
+    </select>
+
+    <select id="selectUserListByDeptId" resultMap="userResult">
+        select b.ID_ ,b.DISPLAY_NAME_
+        from cube_flowable_dept_mapping a
+            LEFT JOIN act_id_user b on a.user_id = b.ID_
+        where a.dept_id = #{deptId}
+    </select>
+
+    <select id="selectDeptLeaderByDeptId" resultMap="userResult">
+        select b.ID_ ,b.DISPLAY_NAME_
+        from cube_flowable_dept_mapping a
+                 LEFT JOIN act_id_user b on a.user_id = b.ID_
+        where a.dept_id = #{deptId}
+          and a.is_leader = '1'
+    </select>
+
+    <select id="selectDeptLeaderByUserId" resultMap="userResult">
+        select b.ID_ ,b.DISPLAY_NAME_
+        from cube_flowable_dept_mapping a
+            LEFT JOIN act_id_user b on a.user_id = b.ID_
+        where a.user_id = #{userId}
+        and  a.is_leader = '1'
+    </select>
+
+    <select id="selectRoleById" resultMap="roleResult">
+        select ID_, NAME_
+        from act_id_group
+        where ID_ = #{id}
+    </select>
+
+    <select id="selectRoleList" parameterType="com.liujianan.cube.flowable.entity.CubeRole" resultMap="roleResult">
+        select ID_, NAME_
+        from act_id_group
+        where 0 = 0
+        <if test="id != null and id != ''">
+            and ID_ = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and NAME_ like
+            <if test="dbType == 'mysql'">CONCAT('%',#{name},'%')</if>
+            <if test="dbType == 'oracle'">'%,'||#{name}||',%'</if>
+            <if test="dbType == 'mssql'">'%,'+#{name}+',%'</if>
+        </if>
+    </select>
+
+    <insert id="insertCubeRole">
+        insert into act_id_group
+            (ID_, NAME_)
+        values
+            (#{id}, #{name})
+    </insert>
+
+    <insert id="insertCubeUser">
+        insert into act_id_user
+          (ID_, DISPLAY_NAME_)
+        values
+          (#{id}, #{name} )
+    </insert>
+
+    <insert id="insertCubeUserList">
+        insert into act_id_user
+        (ID_, DISPLAY_NAME_)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id},#{item.name})
+        </foreach>
+    </insert>
+</mapper>

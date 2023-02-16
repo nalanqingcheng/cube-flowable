@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liujianan.cube.flowable.mapper.CubeFlowFormMapper">
+
+    <resultMap type="com.liujianan.cube.flowable.entity.CubeFlowForm" id="WfFormResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="tableCode"    column="table_code"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryName" column="category_name"  />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="formData"    column="form_data"    />
+        <result property="formType"    column="form_type"    />
+        <result property="componentPath"    column="component_path"    />
+    </resultMap>
+
+    <sql id="selectWfFormVo">
+        select id, name, table_code, category_id, category_name, del_flag, create_by, create_time, update_by, update_time, remark, form_data, form_type, component_path from cube_flowable_form
+    </sql>
+
+    <select id="selectWfFormList" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm" resultMap="WfFormResult">
+        <include refid="selectWfFormVo"/>
+        where 1=1 and del_flag = '0'
+        <if test="name != null  and name != ''"> and name like
+            <if test="dbType == 'mysql'">concat('%', #{name}, '%')</if>
+            <if test="dbType == 'oracle'">'%,'||#{name}||',%'</if>
+            <if test="dbType == 'mssql'">'%,'+#{name}+',%'</if>
+        </if>
+        <if test="tableCode != null  and tableCode != ''"> and table_code = #{tableCode}</if>
+        <if test="categoryId != null and categoryId != '' "> and category_id = #{categoryId}</if>
+    </select>
+    <select id="selectWfFormListFilter" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm" resultMap="WfFormResult">
+        <include refid="selectWfFormVo"/>
+        where 1=1 and del_flag = '0'
+        <if test="name != null  and name != ''"> and name like
+            <if test="dbType == 'mysql'">concat('%', #{name}, '%')</if>
+            <if test="dbType == 'oracle'">'%,'||#{name}||',%'</if>
+            <if test="dbType == 'mssql'">'%,'+#{name}+',%'</if>
+        </if>
+        <if test="tableCode != null  and tableCode != ''"> and table_code = #{tableCode}</if>
+        <if test="categoryId != null "> and category_id = #{categoryId}</if>
+        <if test="filter != null and filter = '1'"> and id not in ( select form_id from cube_flowable_form_model )</if>
+    </select>
+
+    <select id="selectWfFormById" parameterType="Long" resultMap="WfFormResult">
+        <include refid="selectWfFormVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWfForm" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm" useGeneratedKeys="true" keyProperty="id">
+        insert into cube_flowable_form
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="tableCode != null and tableCode != ''">table_code,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="categoryName != null">category_name,</if>
+            <if test="formType != null">form_type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="tableCode != null and tableCode != ''">#{tableCode},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="categoryName != null">#{categoryName},</if>
+            <if test="formType != null">#{formType},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWfForm" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm">
+        update cube_flowable_form
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="tableCode != null and tableCode != ''">table_code = #{tableCode},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="categoryName != null">category_name = #{categoryName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="formData != null">form_data = #{formData},</if>
+            <if test="formType != null">form_type = #{formType},</if>
+            <if test="componentPath != null">component_path = #{componentPath},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWfFormById" parameterType="Long">
+        delete from cube_flowable_form where id = #{id}
+    </delete>
+
+    <delete id="deleteWfFormByIds" parameterType="String">
+        delete from cube_flowable_form where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+<!--    <insert id="insertInstanceBusiness">-->
+<!--        INSERT INTO cube_flowable_instance_busines (instance_id, business_key, table_code, create_user_id, create_time) VALUES (#{instanceId}, #{businessKey}, #{tableCode}, #{createUserId}, #{createTime})-->
+<!--    </insert>-->
+
+    <update id="rawUpdateSql" parameterType="String">
+        ${sql}
+    </update>
+
+    <select id="rawSelectSql" parameterType="String" resultType="Map">
+        ${sql}
+    </select>
+
+    <update id="dropTableIfExists" parameterType="String">
+        DROP TABLE IF EXISTS ${tableCode}
+    </update>
+
+    <select id="selectFormDesignByDeploymentId" resultMap="WfFormResult">
+        SELECT
+            id, name, table_code, category_id, category_name, del_flag, create_by, create_time, update_by, update_time, remark, form_data, form_type, component_path
+        FROM
+            cube_flowable_form
+        WHERE
+            ID = (
+            SELECT
+                FORM_ID
+            FROM
+                cube_flowable_form_model
+            WHERE
+                MODEL_ID = (
+                    SELECT
+                        ID_
+                    FROM
+                        ACT_RE_MODEL
+                    WHERE
+                        DEPLOYMENT_ID_ = #{deploymentId}
+                    )
+                ) LIMIT 1
+    </select>
+
+    <select id="getFormDataByBusinessKeyAndTableCode" resultType="Map">
+        SELECT * FROM ${tableCode} WHERE ID = #{businessKey}
+    </select>
+
+</mapper>

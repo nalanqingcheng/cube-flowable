@@ -1,0 +1,13 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.liujianan.cube.flowable.service.impl.HouseServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeFlowableModelerServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeFlowFormServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeProcessDefinitionServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeInitiateApplicationServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeProcessServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeNodeConfigServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeDeptServiceImpl,\
+  com.liujianan.cube.flowable.service.impl.CubeUserServiceImpl,\
+  com.liujianan.cube.flowable.config.AutoCreateTableConfig,\
+  com.liujianan.cube.flowable.util.CubeAppContextUtil,\
+  com.liujianan.cube.flowable.config.CubeFlowProperties

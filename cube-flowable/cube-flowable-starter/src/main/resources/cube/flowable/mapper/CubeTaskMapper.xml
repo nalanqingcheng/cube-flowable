@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liujianan.cube.flowable.mapper.CubeTaskMapper">
+
+    <select id="findApplicationList" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="com.liujianan.cube.flowable.entity.CubeTask">
+        SELECT
+            a.id,
+            a.deployment_id AS deploymentId,
+            a.proc_def_id AS procDefId,
+            a.instance_id AS instanceId,
+            a.business_key AS businessKey,
+            a.table_code AS tableCode,
+            a.status,
+            a.result,
+            a.applay_time AS applayTime,
+            a.create_time AS createTime,
+            a.create_user_id AS createBy,
+            b.form_type AS formType,
+            b.form_data AS formData,
+            b.component_path AS componentName,
+            a.title AS title,
+            a.process_name AS procdesName,
+            e.ID_ AS taskId,
+            e.NAME_ AS taskName,
+            e.PRIORITY_ AS priority
+        FROM
+            cube_flowable_instance_busines a
+            LEFT JOIN cube_flowable_form b ON b.table_code = a.table_code
+            LEFT JOIN act_hi_procinst c ON c.PROC_INST_ID_ = a.instance_id
+            LEFT JOIN act_ru_task e ON e.PROC_INST_ID_ = c.PROC_INST_ID_
+        WHERE a.create_user_id = #{currentUser.userName}
+        <if test="taskName != null and taskName != ''">
+            and c.NAME_ like CONCAT('%',#{taskName},'%')
+        </if>
+        <if test="status != null and status != ''">
+            and a.status = #{status}
+        </if>
+        <if test="result != null and result != ''">
+            and a.result = #{result}
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="findApplicationCount" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="Integer">
+
+    </select>
+
+    <select id="findTodoList" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="com.liujianan.cube.flowable.entity.CubeTask">
+        SELECT DISTINCT
+            a.id,
+            a.deployment_id AS deploymentId,
+            a.proc_def_id AS procDefId,
+            a.instance_id AS instanceId,
+            a.business_key AS businessKey,
+            a.table_code AS tableCode,
+            a.status,
+            a.result,
+            a.applay_time AS applayTime,
+            a.create_time AS createTime,
+            a.create_user_id AS createBy,
+            b.form_type AS formType,
+            b.form_data AS formData,
+            b.component_path AS componentName,
+            a.title AS title,
+            a.process_name AS procdesName,
+            e.ID_ AS taskId,
+            e.NAME_ AS taskName,
+            e.PRIORITY_ AS priority,
+            e.TASK_DEF_KEY_ AS approvedTask
+        FROM
+            cube_flowable_instance_busines a
+            LEFT JOIN cube_flowable_form b ON b.table_code = a.table_code
+            LEFT JOIN act_hi_procinst c ON c.PROC_INST_ID_ = a.instance_id
+            LEFT JOIN act_ru_task e ON e.PROC_INST_ID_ = c.PROC_INST_ID_
+            LEFT JOIN act_ru_identitylink lk ON lk.TASK_ID_ = e.ID_
+        WHERE e.SUSPENSION_STATE_ = 1
+        AND ( e.ASSIGNEE_ = #{currentUser.userName} OR ( e.ASSIGNEE_ IS NULL AND lk.USER_ID_ = #{currentUser.userName}))
+        <if test="title != null and title != ''">
+            and a.title like CONCAT('%',#{title},'%')
+        </if>
+        order by
+        e.CREATE_TIME_ DESC
+    </select>
+
+    <select id="findTodoCount" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="Integer">
+
+    </select>
+
+    <select id="findDoneList" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="com.liujianan.cube.flowable.entity.CubeTask">
+        SELECT
+            a.id,
+            a.deployment_id AS deploymentId,
+            a.proc_def_id AS procDefId,
+            a.instance_id AS instanceId,
+            a.business_key AS businessKey,
+            a.table_code AS tableCode,
+            a.status,
+            a.result,
+            a.applay_time AS applayTime,
+            a.create_time AS createTime,
+            a.create_user_id AS createBy,
+            b.form_type AS formType,
+            b.form_data AS formData,
+            b.component_path AS componentName,
+            a.title AS title,
+            a.process_name AS procdesName,
+            e.ID_ AS taskId,
+            e.NAME_ AS taskName,
+            f.MESSAGE_ AS comment,
+            e.PRIORITY_ AS priority,
+            e.DURATION_ AS duration
+        FROM
+            cube_flowable_instance_busines a
+            LEFT JOIN cube_flowable_form b ON b.table_code = a.table_code
+            LEFT JOIN act_hi_procinst c ON c.PROC_INST_ID_ = a.instance_id
+            LEFT JOIN act_hi_taskinst e ON e.PROC_INST_ID_ = c.PROC_INST_ID_
+            LEFT JOIN act_hi_comment f ON f.TASK_ID_ = e.ID_
+        WHERE
+            f.ACTION_ = 'AddComment' and f.USER_ID_ = #{currentUser.userName}
+        <if test="taskName != null and taskName != ''">
+            and e.NAME_ like CONCAT('%',#{taskName},'%')
+        </if>
+        ORDER BY
+            e.END_TIME_ DESC
+    </select>
+
+    <select id="findDoneCount" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="Integer">
+
+    </select>
+
+    <select id="getActiveActivityIds" parameterType="String" resultType="java.lang.String">
+        select  b.TASK_DEF_KEY_
+        from cube_flowable_instance_busines a
+        LEFT JOIN act_ru_task b on  b.PROC_INST_ID_ = a.instance_id
+        LEFT JOIN act_ru_identitylink c ON c.TASK_ID_ = b.ID_
+        where  a.instance_id = #{instanceId}
+        and b.SUSPENSION_STATE_ = 1
+        and c.ID_ is not null
+    </select>
+
+</mapper>
