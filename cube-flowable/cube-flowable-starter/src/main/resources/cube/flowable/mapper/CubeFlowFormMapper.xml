@@ -47,14 +47,15 @@
         <if test="filter != null and filter = '1'"> and id not in ( select form_id from cube_flowable_form_model )</if>
     </select>
 
-    <select id="selectWfFormById" parameterType="Long" resultMap="WfFormResult">
+    <select id="selectWfFormById" parameterType="String" resultMap="WfFormResult">
         <include refid="selectWfFormVo"/>
         where id = #{id}
     </select>
 
-    <insert id="insertWfForm" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertWfForm" parameterType="com.liujianan.cube.flowable.entity.CubeFlowForm" keyProperty="id">
         insert into cube_flowable_form
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="tableCode != null and tableCode != ''">table_code,</if>
             <if test="categoryId != null">category_id,</if>
@@ -68,6 +69,7 @@
             <if test="remark != null">remark,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="tableCode != null and tableCode != ''">#{tableCode},</if>
             <if test="categoryId != null">#{categoryId},</if>

@@ -46,7 +46,7 @@
     </select>
 
     <select id="findTodoList" parameterType="com.liujianan.cube.flowable.entity.CubeTask" resultType="com.liujianan.cube.flowable.entity.CubeTask">
-        SELECT DISTINCT
+        SELECT
             a.id,
             a.deployment_id AS deploymentId,
             a.proc_def_id AS procDefId,

@@ -13,6 +13,7 @@ import com.liujianan.cube.flowable.mapper.CubeFlowFormMapper;
 import com.liujianan.cube.flowable.mapper.CubeFlowableModelerMapper;
 import com.liujianan.cube.flowable.service.CubeFlowableModelerService;
 import com.liujianan.cube.flowable.util.CubePage;
+import com.liujianan.cube.flowable.util.UUIDUtil;
 import org.flowable.engine.ManagementService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.impl.persistence.entity.ModelEntityImpl;
@@ -23,9 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -176,9 +174,11 @@ public class CubeFlowableModelerServiceImpl implements CubeFlowableModelerServic
         repositoryService.saveModel(model);
 
         // 记录表单模型关系表
-        StringBuilder builder = new StringBuilder(" INSERT INTO CUBE_FLOWABLE_FORM_MODEL (FORM_ID, MODEL_ID) VALUES ( ");
-        builder.append(Integer.valueOf(formId));
-        builder.append(" , '");
+        StringBuilder builder = new StringBuilder(" INSERT INTO CUBE_FLOWABLE_FORM_MODEL (ID, FORM_ID, MODEL_ID) VALUES ( '");
+        builder.append(UUIDUtil.uuid());
+        builder.append("' , '");
+        builder.append(formId);
+        builder.append("' , '");
         builder.append(model.getId());
         builder.append("' ) ");
         formMapper.rawUpdateSql(builder.toString());

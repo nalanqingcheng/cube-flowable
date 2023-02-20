@@ -30,7 +30,7 @@ public interface CubeFlowFormService {
      * @param id 流程表单ID
      * @return 流程表单
      */
-    CubeFlowForm selectFormById(Long id);
+    CubeFlowForm selectFormById(String id);
 
     /**
      * 新增流程表单

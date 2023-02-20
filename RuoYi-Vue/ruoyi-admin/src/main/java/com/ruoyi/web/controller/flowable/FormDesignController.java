@@ -50,7 +50,7 @@ public class FormDesignController extends BaseController {
      * @return
      */
     @GetMapping("/getForm")
-    public AjaxResult getForm(Long id) {
+    public AjaxResult getForm(String id) {
         return AjaxResult.success(cubeFlowFormService.selectFormById(id));
     }
 

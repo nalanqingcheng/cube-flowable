@@ -15,7 +15,7 @@ public class CubeFlowForm extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 名称 */
     private String name;
@@ -56,11 +56,11 @@ public class CubeFlowForm extends BaseEntity {
     /** 根据祖级查询 */
     private String ancestorsQuery;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

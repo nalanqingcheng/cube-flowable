@@ -22,9 +22,10 @@
         delete from cube_flowable_instance_busines where id = #{id}
     </delete>
 
-    <insert id="insertInstanceBusiness" parameterType="com.liujianan.cube.flowable.entity.CubeFlowableInstanceBusiness" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertInstanceBusiness" parameterType="com.liujianan.cube.flowable.entity.CubeFlowableInstanceBusiness" keyProperty="id">
         INSERT INTO cube_flowable_instance_busines
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
             <if test="instanceId != null and instanceId != ''">instance_id,</if>
             <if test="businessKey != null and businessKey != ''">business_key,</if>
             <if test="tableCode != null and tableCode != ''">table_code,</if>
@@ -39,6 +40,7 @@
             <if test="procdesName != null">process_name,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
             <if test="instanceId != null and instanceId != ''">#{instanceId},</if>
             <if test="businessKey != null and businessKey != ''">#{businessKey},</if>
             <if test="tableCode != null and tableCode != ''">#{tableCode},</if>

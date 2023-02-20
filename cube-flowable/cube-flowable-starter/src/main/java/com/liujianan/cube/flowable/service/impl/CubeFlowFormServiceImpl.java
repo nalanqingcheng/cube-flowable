@@ -14,6 +14,7 @@ import com.liujianan.cube.flowable.mapper.CubeFlowableInstanceBusinessMapper;
 import com.liujianan.cube.flowable.service.CubeFlowFormService;
 import com.liujianan.cube.flowable.service.CubeProcessService;
 import com.liujianan.cube.flowable.util.FormUtil;
+import com.liujianan.cube.flowable.util.UUIDUtil;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
@@ -77,7 +78,7 @@ public class CubeFlowFormServiceImpl implements CubeFlowFormService {
     }
 
     @Override
-    public CubeFlowForm selectFormById(Long id) {
+    public CubeFlowForm selectFormById(String id) {
         return cubeFlowFormMapper.selectWfFormById(id);
     }
 
@@ -86,6 +87,7 @@ public class CubeFlowFormServiceImpl implements CubeFlowFormService {
         CurrentUser currentUser = cubeFlowForm.getCurrentUser();
         cubeFlowForm.setCreateTime(new Date());
         cubeFlowForm.setCreateBy(currentUser.getUserName());
+        cubeFlowForm.setId(UUIDUtil.uuid());
         return cubeFlowFormMapper.insertWfForm(cubeFlowForm);
     }
 
@@ -161,6 +163,7 @@ public class CubeFlowFormServiceImpl implements CubeFlowFormService {
             // 记录流程实例业务关系
             CubeFlowableInstanceBusiness cfib = new CubeFlowableInstanceBusiness();
             // cfib.setInstanceId(instance.getId());
+            cfib.setId(UUIDUtil.uuid());
             cfib.setBusinessKey(busindessKey + "");
             cfib.setTableCode(tableCode);
             cfib.setStatus(FlowableConstant.STATUS_TO_APPLY);
@@ -459,6 +462,7 @@ public class CubeFlowFormServiceImpl implements CubeFlowFormService {
 
         // 记录流程实例业务关系(instance_id 字段为空，因为尚未发起流程)
         CubeFlowableInstanceBusiness cfib = new CubeFlowableInstanceBusiness();
+        cfib.setId(UUIDUtil.uuid());
         cfib.setBusinessKey(id + "");
         cfib.setTableCode(tableCode);
         cfib.setStatus(FlowableConstant.STATUS_TO_APPLY);

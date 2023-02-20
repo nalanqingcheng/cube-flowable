@@ -6,7 +6,7 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://192.168.28.159:3306/cube-ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+                url: jdbc:mysql://192.168.23.40:3306/cube-ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
                 username: root
                 password: Hsoft@xjs123
             # 从库数据源

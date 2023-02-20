@@ -24,7 +24,7 @@ public interface CubeFlowFormMapper {
      * @param id 流程表单ID
      * @return 流程表单
      */
-    CubeFlowForm selectWfFormById(Long id);
+    CubeFlowForm selectWfFormById(String id);
 
     /**
      * 查询流程表单列表

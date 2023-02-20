@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `cube_flowable_form`  (
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS `cube_flowable_form_model`  (
   `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
-  `form_id` bigint(20) NOT NULL COMMENT '表单ID',
+    `form_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表单ID',
   `model_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模型ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表单模型关联表' ROW_FORMAT = Dynamic;
