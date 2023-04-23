@@ -94,7 +94,7 @@ pagehelper:
 #### 在线体验
 - admin/admin123,zhangsan/123456,lisi/123456,wangwu/123456,zhaoliu/123456
 - 演示地址：http://221.212.111.73:8001/
-
+- 码云地址：https://gitee.com/hitsoft1995/cube-flowable
 
 ### 联系
 邮箱: 1874924884@qq.com
